@@ -18,51 +18,25 @@ export default function LoginPage() {
   const onSubmit = async (values: LoginFormValues) => {
   try {
     const user = await dispatch(login(values)).unwrap();
-
-    navigate(
-      user.role === "admin" ? "/admin/dashboard" : "/dashboard",
-      { replace: true },
-    );
+    navigate(user.role === "admin" ? "/admin/dashboard" : "/dashboard",{ replace: true });
   } catch (error) {
-  if (
-    error === "EMAIL_NOT_VERIFIED" ||
-    error === "Please verify your email"
-  ) {
-    navigate("/verify-email", {
-      state: { email: values.email },
-    });
-
+  if ( error === "EMAIL_NOT_VERIFIED" || error === "Please verify your email" ) {
+    navigate("/verify-email", {state: { email: values.email }});
     return;
   }
-
-  setError("root", {
-    message: getErrorMessage(error),
-  });
+  setError("root", {message: getErrorMessage(error)});
 }
 };
   return (
     <div className="form-content">
       <h2>Sign in to your account</h2>
-
       <form noValidate onSubmit={handleSubmit(onSubmit)}>
         <fieldset disabled={isSubmitting}>
           <div>
             <label htmlFor="email">Email address</label>
-            <input
-              id="email"
-              type="email"
-              autoComplete="username"
-              aria-invalid={Boolean(errors.email)}
-              aria-describedby={errors.email ? "email-error" : undefined}
-              {...register("email")}
-            />
-            {errors.email && (
-              <p className="field-error" id="email-error">
-                {errors.email.message}
-              </p>
-            )}
+            <input type="email" {...register("email")}/>
+            {errors.email && (<p className="field-error" id="email-error">{errors.email.message}</p>)}
           </div>
-
           <PasswordField
             id="password"
             label="Password"
@@ -70,22 +44,12 @@ export default function LoginPage() {
             error={errors.password?.message}
             autoComplete="current-password"
           />
-
-          <Link className="forgot-link" to="/forgot-password">
-            Forgot password?
-          </Link>
-
+          <Link className="forgot-link" to="/forgot-password">Forgot password?</Link>
           {errors.root?.message && <p role="alert">{errors.root.message}</p>}
-
-          <button type="submit">
-            {isSubmitting ? "Signing in…" : "Sign in"}
-          </button>
+          <button type="submit">{isSubmitting ? "Signing in…" : "Sign in"}</button>
         </fieldset>
       </form>
-
-      <footer>
-        New here? <Link to="/register">Create an account</Link>
-      </footer>
+      <footer>New here? <Link to="/register">Create an account</Link></footer>
     </div>
   )
 }

@@ -67,5 +67,5 @@ export default function UserSearch({ onSearch }: Props) {
         Clear
       </button>
     </div>
-  );
+  )
 }

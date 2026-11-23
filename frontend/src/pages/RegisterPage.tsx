@@ -13,19 +13,16 @@ export default function RegisterPage() {
   const { register, handleSubmit, setError, formState: { errors, isSubmitting } } = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
     mode: "onBlur",
-    defaultValues: {
-      username: "",
-      email: "",
-      password: "",
-      confirmPassword: ""
-    }
+    defaultValues: { username: "", email: "", password: "", confirmPassword: "" },
   });
   const onSubmit = async (values: RegisterFormValues) => {
     try {
       const data = await authService.register(values);
       toast.success(data.message);
-      navigate("/verify-email", { state: { email: data.user.email, verificationId: data.verificationId } });
-    } catch (error) { 
+      navigate("/verify-email", {
+        state: { email: data.user.email, verificationId: data.verificationId },
+      });
+    } catch (error) {
       setError("root", { message: getErrorMessage(error) });
     }
   };
@@ -46,11 +43,7 @@ export default function RegisterPage() {
               aria-describedby={errors.username ? "username-error" : undefined}
               {...register("username")}
             />
-            {errors.username && (
-              <p className="field-error" id="username-error">
-                {errors.username.message}
-              </p>
-            )}
+            {errors.username && (<p className="field-error" id="username-error">{errors.username.message}</p>)}
           </div>
 
           <div>
@@ -63,11 +56,7 @@ export default function RegisterPage() {
               aria-describedby={errors.email ? "email-error" : undefined}
               {...register("email")}
             />
-            {errors.email && (
-              <p className="field-error" id="email-error">
-                {errors.email.message}
-              </p>
-            )}
+            {errors.email && (<p className="field-error" id="email-error">{errors.email.message}</p>)}
           </div>
 
           <PasswordField
@@ -88,9 +77,7 @@ export default function RegisterPage() {
 
           {errors.root?.message && <p role="alert">{errors.root.message}</p>}
 
-          <button type="submit">
-            {isSubmitting ? "Creating account…" : "Create account"}
-          </button>
+          <button type="submit">{isSubmitting ? "Creating account…" : "Create account"}</button>
         </fieldset>
       </form>
 
@@ -98,5 +85,5 @@ export default function RegisterPage() {
         Already have an account? <Link to="/login">Sign in</Link>
       </footer>
     </div>
-  );
+  )
 }

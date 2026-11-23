@@ -21,10 +21,7 @@ export const logout = createAsyncThunk<string, boolean, { rejectValue: string }>
       return data.message;
     }
     catch (error) {
-  if (
-    axios.isAxiosError(error) &&
-    error.response?.data?.code === "EMAIL_NOT_VERIFIED"
-  ) {
+  if (axios.isAxiosError(error) && error.response?.data?.code === "EMAIL_NOT_VERIFIED") {
     return rejectWithValue("EMAIL_NOT_VERIFIED");
   }
 
